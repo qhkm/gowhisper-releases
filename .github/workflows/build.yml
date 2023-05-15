@@ -38,8 +38,6 @@ jobs:
           node-version: 16
           cache: npm
           cache-dependency-path: gowhisper/package-lock.json
-      - name: echo
-        run: ls .
       - name: install dependencies
         run: npm install --force --silent
         working-directory: gowhisper
@@ -55,7 +53,6 @@ jobs:
           # CSC_LINK: ${{ secrets.CSC_LINK }}
           # CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
         run: |
-          pwd
           npm run package:mac -- --publish always
         working-directory: gowhisper
       # - name: publish to release repo
