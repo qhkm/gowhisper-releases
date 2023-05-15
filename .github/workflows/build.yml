@@ -22,11 +22,6 @@ jobs:
   build_on_mac:
     runs-on: macos-latest
     steps:
-      - name: create folder
-        run: |
-          mkdir gowhisper
-          cd gowhisper
-        working-directory: gowhisper
       - name: Checkout gh repo
         uses: actions/checkout@v3
         with:
