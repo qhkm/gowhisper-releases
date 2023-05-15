@@ -21,6 +21,9 @@ jobs:
 
   build_on_mac:
     runs-on: macos-latest
+    defaults:
+      run:
+        working-directory: gowhisper
     steps:
       - name: Checkout gh repo
         uses: actions/checkout@v3
