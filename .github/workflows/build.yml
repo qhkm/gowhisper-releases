@@ -52,11 +52,11 @@ jobs:
           CSC_LINK: ${{ secrets.CSC_LINK }}
           CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
         run: |
-          npm run package:mac -- --publish always
           ls .
+          npm run package:mac -- --publish always
       # - name: publish to release repo
       #   uses: softprops/action-gh-releases@v1
-      #   with:
+      #   witht
       #     repository: ${{ secrets.OWNER }}/${{ secrets.REPO }}
       #     token: ${{ secrets.GH_TOKEN }}
       #     tag_name: ${{ steps.tag.outputs.release_tag }}
