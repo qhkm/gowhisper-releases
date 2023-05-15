@@ -53,6 +53,7 @@ jobs:
           # CSC_LINK: ${{ secrets.CSC_LINK }}
           # CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
         run: |
+          pwd
           npm run package:mac -- --publish always
         working-directory: gowhisper
       # - name: publish to release repo
