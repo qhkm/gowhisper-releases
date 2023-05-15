@@ -4,10 +4,6 @@ on:
     branches:
       - main
 
-defaults:
-  run:
-    working-directory: gowhisper
-
 jobs:
   # build_on_linux:
   #   runs-on: ubuntu-latest
@@ -57,6 +53,7 @@ jobs:
           CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
         run: |
           ls .
+          pwd
           npm run package:mac -- --publish always
       # - name: publish to release repo
       #   uses: softprops/action-gh-releases@v1
