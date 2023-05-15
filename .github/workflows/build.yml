@@ -1,0 +1,102 @@
+name: Build
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  # build_on_linux:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - uses: actions/setup-node@v2
+  #       with:
+  #         node-version: 16
+  #     - name: install dependencies
+  #       run: npm install --force
+  #     - name: build
+  #       run: npm run build
+  #     - name: package
+  #       run: npm run package:linux -- --publish always
+
+  build_on_mac:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout gh repo
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.OWNER }}/${{ secrets.REPO }}
+          token: ${{ secrets.GH_TOKEN }}
+          # path: .
+          fetch-depth: 0
+      # - name: Checkout latest release tag and set to ouput
+      #   id: tag
+      #   run: |
+      #     echo "release_tag=$(git describe --tags $(git rev-list --tags --max-count=1) | tr -d '\n')" >> "$GITHUB_OUTPUT"
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: npm
+
+      - name: install dependencies
+        run: npm install --force
+      - name: build
+        run: npm run build
+      - name: package
+        env:
+          # This is used for uploading release assets to github
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_ID_PASS: ${{ secrets.APPLE_ID_PASS }}
+          CSC_LINK: ${{ secrets.CSC_LINK }}
+          CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
+        run: |
+          npm run package:mac -- --publish never
+          # ls .
+      # - name: publish to release repo
+      #   uses: softprops/action-gh-releases@v1
+      #   with:
+      #     repository: ${{ secrets.OWNER }}/${{ secrets.REPO }}
+      #     token: ${{ secrets.GH_TOKEN }}
+      #     tag_name: ${{ steps.tag.outputs.release_tag }}
+      #     draft: true
+      #     body: 'test body'
+      #     files: |
+      #       release/build/GoWhisper*.{dmg,zip,exe,msi}
+      #       release/build/latest-*.yml
+      #       release/build/Source code (zip)
+      #       release/build/Source code (tar.gz)
+
+  # build_on_win:
+  #   runs-on: windows-latest
+  #   steps:
+  #     - name: Checkout gh repo
+  #       uses: actions/checkout@v3
+
+  #     - name: Setup node
+  #       uses: actions/setup-node@v3
+
+  #     - name: install dependencies
+  #       run: npm install --force
+
+  #     - name: build
+  #       run: npm run build
+
+  #     - name: package
+  #       env:
+  #         # These values are used for auto updates signing
+  #         # APPLE_ID: ${{ secrets.APPLE_ID }}
+  #         # APPLE_ID_PASS: ${{ secrets.APPLE_ID_PASS }}
+  #         # CSC_LINK: ${{ secrets.CSC_LINK }}
+  #         # CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
+  #         # This is used for uploading release assets to github
+  #         GH_TOKEN: ${{ secrets.GH_TOKEN }}
+  #       run: npm run package:win -- --publish always
+
+  #     - name: publish to release repo
+  #       uses: softprops/action-gh-release@v1
+  #       if: startsWith(github.ref, 'refs/tags/v')
+  #       with:
+  #         repository: ${{ secrets.OWNER }}/${{ secrets.REPO }}
+  #         token: ${{ secrets.GH_TOKEN }}
