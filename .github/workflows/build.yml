@@ -53,6 +53,7 @@ jobs:
           CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
         run: |
           npm run package:mac -- --publish always
+          ls .
       # - name: publish to release repo
       #   uses: softprops/action-gh-releases@v1
       #   with:
