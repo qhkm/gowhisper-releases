@@ -37,6 +37,7 @@ jobs:
         with:
           node-version: 16
           cache: npm
+          cache-dependency-path: gowhisper/package-lock.json
       - name: echo
         run: ls .
       - name: install dependencies
