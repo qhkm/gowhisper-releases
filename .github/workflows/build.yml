@@ -40,7 +40,7 @@ jobs:
           cache: npm
 
       - name: install dependencies
-        run: npm install --force
+        run: npm install --force --silent
       - name: build
         run: npm run build
       - name: package
@@ -52,8 +52,7 @@ jobs:
           CSC_LINK: ${{ secrets.CSC_LINK }}
           CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
         run: |
-          npm run package:mac -- --publish never
-          # ls .
+          npm run package:mac -- --publish always
       # - name: publish to release repo
       #   uses: softprops/action-gh-releases@v1
       #   with:
