@@ -27,8 +27,7 @@ jobs:
         with:
           repository: ${{ secrets.OWNER }}/${{ secrets.REPO }}
           token: ${{ secrets.GH_TOKEN }}
-          path: ${{ secrets.REPO }}
-          fetch-depth: 0
+          path: .
       # - name: Checkout latest release tag and set to ouput
       #   id: tag
       #   run: |
@@ -38,7 +37,8 @@ jobs:
         with:
           node-version: 16
           cache: npm
-
+      - name: echo
+        run: ls .
       - name: install dependencies
         run: npm install --force --silent
       - name: build
