@@ -34,10 +34,10 @@ jobs:
       #     echo "release_tag=$(git describe --tags $(git rev-list --tags --max-count=1) | tr -d '\n')" >> "$GITHUB_OUTPUT"
       - name: Setup node
         uses: actions/setup-node@v3
-        with:
-          node-version: 16
-          cache: npm
-          cache-dependency-path: gowhisper/package-lock.json
+        # with:
+        #   node-version: 16
+        #   cache: npm
+        #   cache-dependency-path: gowhisper/package-lock.json
       - name: install dependencies
         run: npm install --force --silent
         working-directory: gowhisper
