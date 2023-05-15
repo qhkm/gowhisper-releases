@@ -27,7 +27,7 @@ jobs:
         with:
           repository: ${{ secrets.OWNER }}/${{ secrets.REPO }}
           token: ${{ secrets.GH_TOKEN }}
-          # path: .
+          path: ${{ secrets.REPO }}
           fetch-depth: 0
       # - name: Checkout latest release tag and set to ouput
       #   id: tag
