@@ -42,8 +42,10 @@ jobs:
         run: ls .
       - name: install dependencies
         run: npm install --force --silent
+        working-directory: gowhisper
       - name: build
         run: npm run build
+        working-directory: gowhisper
       - name: package
         env:
           # This is used for uploading release assets to github
@@ -56,6 +58,7 @@ jobs:
           ls .
           pwd
           npm run package:mac -- --publish always
+        working-directory: gowhisper
       # - name: publish to release repo
       #   uses: softprops/action-gh-releases@v1
       #   witht
