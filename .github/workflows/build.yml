@@ -22,12 +22,17 @@ jobs:
   build_on_mac:
     runs-on: macos-latest
     steps:
+      - name: create folder
+        run: |
+          mkdir gowhisper
+          cd gowhisper
+        working-directory: gowhisper
       - name: Checkout gh repo
         uses: actions/checkout@v3
         with:
           repository: ${{ secrets.OWNER }}/${{ secrets.REPO }}
           token: ${{ secrets.GH_TOKEN }}
-          path: .
+          path: "./gowhisper"
       # - name: Checkout latest release tag and set to ouput
       #   id: tag
       #   run: |
