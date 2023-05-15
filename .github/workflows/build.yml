@@ -55,7 +55,6 @@ jobs:
           # CSC_LINK: ${{ secrets.CSC_LINK }}
           # CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
         run: |
-          ls .
           pwd
           npm run package:mac -- --publish always
         working-directory: gowhisper
