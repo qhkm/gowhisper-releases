@@ -85,6 +85,11 @@ jobs:
         run: |
           Get-ChildItem $env:GITHUB_WORKSPACE
 
+      - name: Release with notes
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            LICENSE
       # - name: Setup node
       #   uses: actions/setup-node@v3
       #   with:
