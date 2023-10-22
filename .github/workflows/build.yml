@@ -51,14 +51,12 @@ jobs:
       - name: publish to release repo
         uses: softprops/action-gh-release@v1
         with:
-          repository: ${{ secrets.OWNER }}/${{ secrets.REPO }}
           token: ${{ secrets.GH_TOKEN }}
-          # tag_name: ${{ steps.tag.outputs.release_tag }}
+          repository: qhkm/gowhisper-releases
           tag_name: v1.0.9
           draft: true
-          body: 'test body'
           files: |
-            tsconfig.json
+            LICENSE
 
 
   build_on_win:
