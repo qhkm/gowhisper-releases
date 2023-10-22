@@ -74,6 +74,11 @@ jobs:
           token: ${{ secrets.GH_TOKEN }}
           ref: "6f37ad4585155d2539bf52f133ede079176f7276"
           # path: "./gowhisper"
+      - name: Setup node
+        uses: actions/setup-node@v3
+  
+      - name: Install dependencies
+        run: npm install --force --silent
 
       - name: list workspace contents
         run: |
