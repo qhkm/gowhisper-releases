@@ -36,7 +36,7 @@ jobs:
         uses: actions/setup-node@v3
 
       - name: Install dependencies
-        run: npm install --force --silent
+        run: npm install --force
 
       # - name: Build
       #   run: npm run build
