@@ -27,27 +27,31 @@ jobs:
         with:
           repository: ${{ secrets.OWNER }}/${{ secrets.REPO }}
           token: ${{ secrets.GH_TOKEN }}
-          ref: '6f37ad4585155d2539bf52f133ede079176f7276'
+          ref: "6f37ad4585155d2539bf52f133ede079176f7276"
       # - name: Checkout latest release tag and set to ouput
       #   id: tag
       #   run: |
       #     echo "release_tag=$(git describe --tags $(git rev-list --tags --max-count=1) | tr -d '\n')" >> "$GITHUB_OUTPUT"
       - name: Setup node
         uses: actions/setup-node@v3
-        # with:
-          # node-version: 16
-      # - name: install dependencies
-        # run: npm install --force --silent
-      # - name: build
-      #   run: npm run build
-      # - name: package
-      #   env:
-      #     # This is used for uploading release assets to github
-      #     GH_TOKEN: ${{ secrets.GH_TOKEN }}
-      #     APPLE_ID: ${{ secrets.APPLE_ID }}
-      #     APPLE_ID_PASS: ${{ secrets.APPLE_ID_PASS }}
-      #   run: |
-      #     npm run package:mac -- --publish never
+
+      - name: Install dependencies
+        run: npm install --force --silent
+
+      - name: Build
+        run: npm run build
+
+      - name: package
+        env:
+          # This is used for uploading release assets to github
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_ID_PASS: ${{ secrets.APPLE_ID_PASS }}
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          npm run package:mac -- --publish never
+
       - name: publish to release repo
         uses: softprops/action-gh-release@v1
         with:
@@ -56,8 +60,9 @@ jobs:
           tag_name: v1.0.9
           draft: true
           files: |
-            tsconfig.json
-
+            release/build/*.dmg
+            release/build/*.yml
+            release/build/*.yaml
 
   build_on_win:
     runs-on: windows-latest
@@ -67,12 +72,45 @@ jobs:
         with:
           repository: ${{ secrets.OWNER }}/${{ secrets.REPO }}
           token: ${{ secrets.GH_TOKEN }}
-          ref: '6f37ad4585155d2539bf52f133ede079176f7276'
+          ref: "6f37ad4585155d2539bf52f133ede079176f7276"
           # path: "./gowhisper"
 
-      - name: List workspace contents
+      - name: list workspace contents
         run: |
           Get-ChildItem $env:GITHUB_WORKSPACE
+
+      - name: Print current directory
+        run: Get-Location
+
+      - name: package
+        run: npm run package:win -- --publish never
+
+      - name: list release build contents
+        run: |
+          Get-ChildItem $env:GITHUB_WORKSPACE\release\build
+
+      - name: Download CodeSignTool and unzip
+        run: |
+          Invoke-WebRequest -OutFile eSigner_CKA.zip "https://www.ssl.com/download/codesigntool-for-windows"
+          $zipFilePath = "eSigner_CKA.zip"
+          $destinationFolder = Get-Location
+
+          New-Item -ItemType Directory -Force -Path $destinationFolder
+
+          Expand-Archive -Path $zipFilePath -DestinationPath $destinationFolder
+
+      - name: Use CodeSignTool to sign release build
+        run: |
+          echo Current directory: $PWD
+          dir .\CodeSignTool-v1.2.7-windows\
+          cd .\CodeSignTool-v1.2.7-windows\
+          .\CodeSignTool.bat sign -credential_id=${{secrets.CREDENTIAL_ID}}  -username=${{secrets.ES_USERNAME}} -password="${{secrets.ES_PASSWORD}}" -input_file_path="\.release\build\GoWhisper-1.0.9-win-x64.exe" -output_dir_path="." -totp_secret=${{secrets.ES_TOTP_SECRET}}
+      - name: manually update checksum
+        run: npm run updateHash .\release\build\GoWhisper-1.0.9-win-x64.exe
+
+      - name: list workspace contents
+        run: |
+          Get-Content latest.yml
 
       - name: Release with notes
         uses: softprops/action-gh-release@v1
@@ -81,9 +119,10 @@ jobs:
           repository: qhkm/gowhisper-releases
           tag_name: v1.0.9
           draft: true
-          body: 'test body'
+          body: "test body"
           files: |
-            LICENSE
+            GoWhisper-1.0.9-win-x64.exe
+            latest.yml
       # - name: Setup node
       #   uses: actions/setup-node@v3
       #   with:
@@ -100,13 +139,13 @@ jobs:
       #   working-directory: gowhisper
 
       # - name: package
-        # env:
-          # These values are used for auto updates signing
-          # APPLE_ID: ${{ secrets.APPLE_ID }}
-          # APPLE_ID_PASS: ${{ secrets.APPLE_ID_PASS }}
-          # CSC_LINK: ${{ secrets.CSC_LINK }}
-          # CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
-          # This is used for uploading release assets to github
-          # GH_TOKEN: ${{ secrets.GH_TOKEN }}
-        # run: npm run package:win -- --publish always
-        # working-directory: gowhisper
+      # env:
+      # These values are used for auto updates signing
+      # APPLE_ID: ${{ secrets.APPLE_ID }}
+      # APPLE_ID_PASS: ${{ secrets.APPLE_ID_PASS }}
+      # CSC_LINK: ${{ secrets.CSC_LINK }}
+      # CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
+      # This is used for uploading release assets to github
+      # GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      # run: npm run package:win -- --publish always
+      # working-directory: gowhisper
