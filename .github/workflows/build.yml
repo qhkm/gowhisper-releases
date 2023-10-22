@@ -78,7 +78,7 @@ jobs:
         with:
           repository: ${{ secrets.OWNER }}/${{ secrets.REPO }}
           token: ${{ secrets.GH_TOKEN }}
-          ref: ''
+          ref: '6f37ad4585155d2539bf52f133ede079176f7276'
           # path: "./gowhisper"
 
       - name: List workspace contents
