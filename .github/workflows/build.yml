@@ -53,8 +53,11 @@ jobs:
           APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
         run: |
-          npm run package:mac -- --publish always
+          npm run package:mac -- --publish never
 
+      - name: list release build contents
+        run: |
+          ls -la $GITHUB_WORKSPACE
       # - name: publish to release repo
       #   uses: softprops/action-gh-release@v1
       #   with:
