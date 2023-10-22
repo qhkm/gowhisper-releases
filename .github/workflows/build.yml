@@ -78,26 +78,27 @@ jobs:
         with:
           repository: ${{ secrets.OWNER }}/${{ secrets.REPO }}
           token: ${{ secrets.GH_TOKEN }}
+          ref: ''
           # path: "./gowhisper"
 
       - name: List workspace contents
         run: |
           Get-ChildItem $env:GITHUB_WORKSPACE
 
-      - name: Setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
-          cache: npm
-          cache-dependency-path: gowhisper/package-lock.json
+      # - name: Setup node
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: 16
+      #     cache: npm
+      #     cache-dependency-path: gowhisper/package-lock.json
 
-      - name: install dependencies
-        run: npm install --force --silent
-        working-directory: gowhisper
+      # - name: install dependencies
+      #   run: npm install --force --silent
+      #   working-directory: gowhisper
 
-      - name: build
-        run: npm run build
-        working-directory: gowhisper
+      # - name: build
+      #   run: npm run build
+      #   working-directory: gowhisper
 
       # - name: package
         # env:
