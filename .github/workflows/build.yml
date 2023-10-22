@@ -56,7 +56,7 @@ jobs:
           tag_name: v1.0.9
           draft: true
           files: |
-            LICENSE
+            tsconfig.json
 
 
   build_on_win:
