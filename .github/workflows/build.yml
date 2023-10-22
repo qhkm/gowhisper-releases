@@ -88,6 +88,8 @@ jobs:
       - name: Release with notes
         uses: softprops/action-gh-release@v1
         with:
+          token: ${{ secrets.GH_TOKEN }}
+          repository: qhkm/gowhisper-releases
           tag_name: v1.0.9
           files: |
             LICENSE
