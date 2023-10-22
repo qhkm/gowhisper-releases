@@ -106,7 +106,7 @@ jobs:
 
       - name: Use CodeSignTool to sign release build
         run: |
-        
+
           echo "Current directory: $PWD"
 
           $current_dir = $PWD
@@ -117,7 +117,7 @@ jobs:
 
           Set-Location .\CodeSignTool-v1.2.7-windows\
 
-          .\CodeSignTool.bat sign -credential_id=${{secrets.CREDENTIAL_ID}} -username=${{secrets.ES_USERNAME}} -password="${{secrets.ES_PASSWORD}}" -input_file_path=$input_file_path -output_dir_path="." -totp_secret=${{secrets.ES_TOTP_SECRET}}
+          .\CodeSignTool.bat sign -credential_id=${{secrets.CREDENTIAL_ID}} -username=${{secrets.ES_USERNAME}} -password="${{secrets.ES_PASSWORD}}" -input_file_path="$input_file_path" -output_dir_path="." -totp_secret=${{secrets.ES_TOTP_SECRET}}
 
       - name: manually update checksum
         run: npm run updateHash .\release\build\GoWhisper-1.0.9-win-x64.exe
