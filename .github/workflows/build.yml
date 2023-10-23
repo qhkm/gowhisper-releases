@@ -44,6 +44,9 @@ jobs:
         run: |
           ls -la $GITHUB_WORKSPACE
 
+      - name: list workspace contents
+        run: |
+          ls -la $GITHUB_WORKSPACE
       - name: package
         env:
           # This is used for uploading release assets to github
