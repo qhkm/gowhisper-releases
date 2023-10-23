@@ -40,14 +40,12 @@ jobs:
 
       - name: Build
         run: npm run build
-      - name: list workspace contents
+
+      - name: List workspace contents
         run: |
           ls -la $GITHUB_WORKSPACE
 
-      - name: list workspace contents
-        run: |
-          ls -la $GITHUB_WORKSPACE
-      - name: package
+      - name: Package app for distribution
         env:
           # This is used for uploading release assets to github
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
@@ -60,20 +58,17 @@ jobs:
         run: |
           npm run package:mac -- --publish never
 
-      - name: list release build contents
-        run: |
-          ls -la $GITHUB_WORKSPACE
-      # - name: publish to release repo
-      #   uses: softprops/action-gh-release@v1
-      #   with:
-      #     token: ${{ secrets.GH_TOKEN }}
-      #     repository: qhkm/gowhisper-releases
-      #     tag_name: v1.0.9
-      #     draft: true
-      #     files: |
-      #       release/build/*.dmg
-      #       release/build/*.yml
-      #       release/build/*.yaml
+      - name: publish to release repo
+        uses: softprops/action-gh-release@v1
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          repository: qhkm/gowhisper-releases
+          tag_name: v1.0.9
+          draft: true
+          files: |
+            release/build/*.dmg
+            release/build/*.yml
+            release/build/*.yaml
 
   # build_on_win:
   #   runs-on: windows-latest
