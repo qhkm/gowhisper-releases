@@ -27,7 +27,7 @@ jobs:
         with:
           repository: ${{ secrets.OWNER }}/${{ secrets.REPO }}
           token: ${{ secrets.GH_TOKEN }}
-          ref: "27f6352c66e7c002c19b41fc373e49bcb0167b32"
+          ref: "d88297b708c856afbcb6ff2b86f244a47897e259"
       # - name: Checkout latest release tag and set to ouput
       #   id: tag
       #   run: |
