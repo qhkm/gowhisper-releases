@@ -144,7 +144,7 @@ jobs:
           repository: qhkm/gowhisper-releases
           tag_name: v1.0.9
           draft: true
-          body: "Release v1.0.9"
+          body: "Release v1.0.9 test"
           files: |
             GoWhisper-1.0.9-win-x64.exe
             latest.yml
