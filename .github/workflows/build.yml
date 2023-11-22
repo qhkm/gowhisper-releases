@@ -119,6 +119,10 @@ jobs:
 
           echo "Current directory: $current_dir"
 
+          Get-ChildItem $current_dir
+
+          Get-ChildItem $env:GITHUB_WORKSPACE
+
           $input_file_path = Join-Path -Path $current_dir -ChildPath "release\build\GoWhisper-1.0.9-win-x64.exe"
 
           echo "Input file path: $input_file_path"
