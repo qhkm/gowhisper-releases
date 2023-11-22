@@ -122,7 +122,7 @@ jobs:
 
           echo "Input file path: $input_file_path"
 
-          Set-Location .\CodeSignTool-v1.2.7-windows\
+          Set-Location .\CodeSignTool-v1.3.0-windows\
 
           .\CodeSignTool.bat sign -credential_id=${{secrets.CREDENTIAL_ID}} -username=${{secrets.ES_USERNAME}} -password="${{secrets.ES_PASSWORD}}" -input_file_path="$input_file_path" -output_dir_path=".." -totp_secret=${{secrets.ES_TOTP_SECRET}}
 
