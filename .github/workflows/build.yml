@@ -79,7 +79,7 @@ jobs:
         with:
           repository: ${{ secrets.OWNER }}/${{ secrets.REPO }}
           token: ${{ secrets.GH_TOKEN }}
-          ref: "6f37ad4585155d2539bf52f133ede079176f7276"
+          ref: "180de5eac57fff285e7e14d51bd7f863e22895cc"
           # path: "./gowhisper"
       - name: Setup node
         uses: actions/setup-node@v3
@@ -151,7 +151,7 @@ jobs:
           draft: true
           body: "Release v1.0.9 test"
           files: |
-            release/build/GoWhisper-1.0.9-win-x64.exe
+            GoWhisper-1.0.9-win-x64.exe
             latest.yml
       # - name: Setup node
       #   uses: actions/setup-node@v3
