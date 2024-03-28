@@ -129,11 +129,10 @@ jobs:
 
           # Set-Location $current_dir\CodeSignTool-v1.3.0-windows\
 
-          .\CodeSignTool.bat sign -credential_id=${{secrets.CREDENTIAL_ID}} -username=${{secrets.ES_USERNAME}} -password="${{secrets.ES_PASSWORD}}" -input_file_path="$input_file_path" -output_dir_path="." -totp_secret=${{secrets.ES_TOTP_SECRET}}
+          .\CodeSignTool.bat sign -credential_id=${{secrets.CREDENTIAL_ID}} -username=${{secrets.ES_USERNAME}} -password="${{secrets.ES_PASSWORD}}" -input_file_path="$input_file_path" -output_dir_path=".." -totp_secret=${{secrets.ES_TOTP_SECRET}}
 
-      - name: list content
-        run: |
           Get-ChildItem $env:GITHUB_WORKSPACE
+
       - name: manually update checksum
         run: npm run updateHash .\GoWhisper-1.0.9-win-x64.exe
 
@@ -146,7 +145,7 @@ jobs:
           Get-ChildItem $env:GITHUB_WORKSPACE
 
       - name: Release with notes
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           token: ${{ secrets.GH_TOKEN }}
           repository: qhkm/gowhisper-releases
@@ -155,7 +154,7 @@ jobs:
           body: "Release v1.0.9 test"
           files: |
             GoWhisper-1.0.9-win-x64.exe
-            release\build\GoWhisper-1.0.9-win-x64.exe
+            release/build/GoWhisper-1.0.9-win-x64.exe
             latest.yml
       # - name: Setup node
       #   uses: actions/setup-node@v3
