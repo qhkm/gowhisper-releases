@@ -127,11 +127,9 @@ jobs:
 
           echo "Input file path: $input_file_path"
 
-          # Set-Location $current_dir\CodeSignTool-v1.3.0-windows\
+          .\CodeSignTool.bat sign -credential_id=${{secrets.CREDENTIAL_ID}} -username=${{secrets.ES_USERNAME}} -password="${{secrets.ES_PASSWORD}}" -input_file_path="$input_file_path" -output_dir_path="." -totp_secret=${{secrets.ES_TOTP_SECRET}}
 
-          .\CodeSignTool.bat sign -credential_id=${{secrets.CREDENTIAL_ID}} -username=${{secrets.ES_USERNAME}} -password="${{secrets.ES_PASSWORD}}" -input_file_path="$input_file_path" -output_dir_path=".." -totp_secret=${{secrets.ES_TOTP_SECRET}}
-
-          Get-ChildItem $env:GITHUB_WORKSPACE
+           Get-ChildItem $env:GITHUB_WORKSPACE\release\build
 
       - name: manually update checksum
         run: npm run updateHash .\GoWhisper-1.0.9-win-x64.exe
@@ -153,7 +151,6 @@ jobs:
           draft: true
           body: "Release v1.0.9 test"
           files: |
-            GoWhisper-1.0.9-win-x64.exe
             release/build/GoWhisper-1.0.9-win-x64.exe
             latest.yml
       # - name: Setup node
