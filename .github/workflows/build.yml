@@ -79,7 +79,7 @@ jobs:
         with:
           repository: ${{ secrets.OWNER }}/${{ secrets.REPO }}
           token: ${{ secrets.GH_TOKEN }}
-          ref: "8e923eed078e52fc478a9ab998eed1c6f1c61fd0"
+          ref: "3cd62787fd9748d6e63902f3b0372829b1c2ed2f"
           # path: "./gowhisper"
       - name: Setup node
         uses: actions/setup-node@v3
