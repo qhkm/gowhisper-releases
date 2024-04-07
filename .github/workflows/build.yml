@@ -19,57 +19,57 @@ jobs:
   #     - name: package
   #       run: npm run package:linux -- --publish always
 
-  # build_on_mac:
-  #   runs-on: macos-latest
-  #   steps:
-  #     - name: Checkout gh repo
-  #       uses: actions/checkout@v3
-  #       with:
-  #         repository: ${{ secrets.OWNER }}/${{ secrets.REPO }}
-  #         token: ${{ secrets.GH_TOKEN }}
-  #         ref: "e71bba4786aed8c40a0a415dbb4f887b89be2192"
-  #     # - name: Checkout latest release tag and set to ouput
-  #     #   id: tag
-  #     #   run: |
-  #     #     echo "release_tag=$(git describe --tags $(git rev-list --tags --max-count=1) | tr -d '\n')" >> "$GITHUB_OUTPUT"
-  #     - name: Setup node
-  #       uses: actions/setup-node@v3
+  build_on_mac:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout gh repo
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.OWNER }}/${{ secrets.REPO }}
+          token: ${{ secrets.GH_TOKEN }}
+          ref: "2c8d6cf2efe43652535a05dd103113eb04ae1bf4"
+      # - name: Checkout latest release tag and set to ouput
+      #   id: tag
+      #   run: |
+      #     echo "release_tag=$(git describe --tags $(git rev-list --tags --max-count=1) | tr -d '\n')" >> "$GITHUB_OUTPUT"
+      - name: Setup node
+        uses: actions/setup-node@v3
 
-  #     - name: Install dependencies
-  #       run: npm install --force
+      - name: Install dependencies
+        run: npm install --force
 
-  #     - name: Build
-  #       run: npm run build
+      - name: Build
+        run: npm run build
 
-  #     - name: List workspace contents
-  #       run: |
-  #         ls -la $GITHUB_WORKSPACE
+      - name: List workspace contents
+        run: |
+          ls -la $GITHUB_WORKSPACE
 
-  #     - name: Package app for distribution
-  #       env:
-  #         # This is used for uploading release assets to github
-  #         GH_TOKEN: ${{ secrets.GH_TOKEN }}
-  #         APPLE_ID: ${{ secrets.APPLE_ID }}
-  #         APPLE_ID_PASS: ${{ secrets.APPLE_ID_PASS }}
-  #         APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
-  #         APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
-  #         CSC_LINK: ${{ secrets.CSC_LINK }}
-  #         CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
-  #       run: |
-  #         npm run package:mac -- --publish never
+      - name: Package app for distribution
+        env:
+          # This is used for uploading release assets to github
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_ID_PASS: ${{ secrets.APPLE_ID_PASS }}
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          CSC_LINK: ${{ secrets.CSC_LINK }}
+          CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
+        run: |
+          npm run package:mac -- --publish never
 
-  #     - name: publish to release repo
-  #       uses: softprops/action-gh-release@v1
-  #       with:
-  #         token: ${{ secrets.GH_TOKEN }}
-  #         repository: qhkm/gowhisper-releases
-  #         tag_name: v1.0.9
-  #         draft: true
-  #         files: |
-  #           release/build/*.dmg
-  #           release/build/*.zip
-  #           release/build/*.yml
-  #           release/build/*.yaml
+      - name: publish to release repo
+        uses: softprops/action-gh-release@v1
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          repository: qhkm/gowhisper-releases
+          tag_name: v.1.0.10
+          draft: true
+          files: |
+            release/build/*.dmg
+            release/build/*.zip
+            release/build/*.yml
+            release/build/*.yaml
 
   build_on_win:
     runs-on: windows-latest
@@ -79,7 +79,7 @@ jobs:
         with:
           repository: ${{ secrets.OWNER }}/${{ secrets.REPO }}
           token: ${{ secrets.GH_TOKEN }}
-          ref: "3cd62787fd9748d6e63902f3b0372829b1c2ed2f"
+          ref: "2c8d6cf2efe43652535a05dd103113eb04ae1bf4"
           # path: "./gowhisper"
       - name: Setup node
         uses: actions/setup-node@v3
@@ -123,7 +123,7 @@ jobs:
 
           Get-ChildItem $env:GITHUB_WORKSPACE
 
-          $input_file_path = Join-Path -Path $current_dir -ChildPath "release\build\GoWhisper-1.0.9-win-x64.exe"
+          $input_file_path = Join-Path -Path $current_dir -ChildPath "release\build\GoWhisper-1.0.10-win-x64.exe"
 
           echo "Input file path: $input_file_path"
 
@@ -132,7 +132,7 @@ jobs:
            Get-ChildItem $env:GITHUB_WORKSPACE\release\build
 
       - name: manually update checksum
-        run: npm run updateHash .\GoWhisper-1.0.9-win-x64.exe
+        run: npm run updateHash .\GoWhisper-1.0.10-win-x64.exe
 
       - name: list workspace contents
         run: |
@@ -147,35 +147,9 @@ jobs:
         with:
           token: ${{ secrets.GH_TOKEN }}
           repository: qhkm/gowhisper-releases
-          tag_name: v1.0.9
+          tag_name: v.1.0.10
           draft: true
-          body: "Release v1.0.9 test"
+          body: "Release v.1.0.10"
           files: |
-            GoWhisper-1.0.9-win-x64.exe
+            GoWhisper-1.0.10-win-x64.exe
             latest.yml
-      # - name: Setup node
-      #   uses: actions/setup-node@v3
-      #   with:
-      #     node-version: 16
-      #     cache: npm
-      #     cache-dependency-path: gowhisper/package-lock.json
-
-      # - name: install dependencies
-      #   run: npm install --force --silent
-      #   working-directory: gowhisper
-
-      # - name: build
-      #   run: npm run build
-      #   working-directory: gowhisper
-
-      # - name: package
-      # env:
-      # These values are used for auto updates signing
-      # APPLE_ID: ${{ secrets.APPLE_ID }}
-      # APPLE_ID_PASS: ${{ secrets.APPLE_ID_PASS }}
-      # CSC_LINK: ${{ secrets.CSC_LINK }}
-      # CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
-      # This is used for uploading release assets to github
-      # GH_TOKEN: ${{ secrets.GH_TOKEN }}
-      # run: npm run package:win -- --publish always
-      # working-directory: gowhisper
