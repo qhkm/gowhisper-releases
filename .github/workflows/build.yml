@@ -36,6 +36,9 @@ jobs:
         uses: actions/setup-node@v3
 
       - name: Install dependencies
+        run: brew install python-setuptools
+
+      - name: Install dependencies
         run: npm install --force
 
       - name: Build
