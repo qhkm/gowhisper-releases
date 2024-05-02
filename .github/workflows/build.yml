@@ -27,7 +27,7 @@ jobs:
         with:
           repository: ${{ secrets.OWNER }}/${{ secrets.REPO }}
           token: ${{ secrets.GH_TOKEN }}
-          ref: "5bbf56f577b05d737c0a113f39a624e9ff9087ab"
+          ref: "996f3d77c29a80d1e8995ab8777d7a60a8b02035"
       # - name: Checkout latest release tag and set to ouput
       #   id: tag
       #   run: |
@@ -63,7 +63,7 @@ jobs:
         with:
           token: ${{ secrets.GH_TOKEN }}
           repository: qhkm/gowhisper-releases
-          tag_name: v.1.0.12
+          tag_name: v.1.0.13
           draft: true
           files: |
             release/build/*.dmg
@@ -123,7 +123,7 @@ jobs:
 
           Get-ChildItem $env:GITHUB_WORKSPACE
 
-          $input_file_path = Join-Path -Path $current_dir -ChildPath "release\build\GoWhisper-1.0.12-win-x64.exe"
+          $input_file_path = Join-Path -Path $current_dir -ChildPath "release\build\GoWhisper-1.0.13-win-x64.exe"
 
           echo "Input file path: $input_file_path"
 
@@ -132,7 +132,7 @@ jobs:
            Get-ChildItem $env:GITHUB_WORKSPACE\release\build
 
       - name: manually update checksum
-        run: npm run updateHash .\GoWhisper-1.0.12-win-x64.exe
+        run: npm run updateHash .\GoWhisper-1.0.13-win-x64.exe
 
       - name: list workspace contents
         run: |
@@ -147,9 +147,9 @@ jobs:
         with:
           token: ${{ secrets.GH_TOKEN }}
           repository: qhkm/gowhisper-releases
-          tag_name: v.1.0.12
+          tag_name: v.1.0.13
           draft: true
-          body: "Release v.1.0.12"
+          body: "Release v.1.0.13"
           files: |
-            GoWhisper-1.0.12-win-x64.exe
+            GoWhisper-1.0.13-win-x64.exe
             latest.yml
