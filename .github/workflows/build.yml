@@ -28,7 +28,7 @@ jobs:
         with:
           repository: ${{ secrets.OWNER }}/${{ secrets.REPO }}
           token: ${{ secrets.GH_TOKEN }}
-          ref: "4378e2b459295c1bc78a74698129df3ed12b9d67"
+          ref: "8d2cc79fd09b56e667cf6b3aa57c26a2d6c27834"
       # - name: Checkout latest release tag and set to ouput
       #   id: tag
       #   run: |
@@ -83,7 +83,7 @@ jobs:
         with:
           repository: ${{ secrets.OWNER }}/${{ secrets.REPO }}
           token: ${{ secrets.GH_TOKEN }}
-          ref: "4378e2b459295c1bc78a74698129df3ed12b9d67"
+          ref: "8d2cc79fd09b56e667cf6b3aa57c26a2d6c27834"
           # path: "./gowhisper"
       - name: Setup node
         uses: actions/setup-node@v3
