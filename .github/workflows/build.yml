@@ -18,6 +18,7 @@ jobs:
   #       run: npm run build
   #     - name: package
   #       run: npm run package:linux -- --publish always
+  #       run: npm run package:linux -- --publish always
 
   build_on_mac:
     runs-on: macos-latest
