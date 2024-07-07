@@ -84,6 +84,7 @@ jobs:
           token: ${{ secrets.GH_TOKEN }}
           ref: "29feac0c6da64312679374fa602ca72dd9d6da85"
           # path: "./gowhisper"
+          # test
       - name: Setup node
         uses: actions/setup-node@v3
   
