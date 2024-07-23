@@ -28,7 +28,7 @@ jobs:
         with:
           repository: ${{ secrets.OWNER }}/${{ secrets.REPO }}
           token: ${{ secrets.GH_TOKEN }}
-          ref: "8d2cc79fd09b56e667cf6b3aa57c26a2d6c27834"
+          ref: "e9b50ca42efd0db5e665a9eb382549fa8d8b8429"
       # - name: Checkout latest release tag and set to ouput
       #   id: tag
       #   run: |
@@ -67,7 +67,7 @@ jobs:
         with:
           token: ${{ secrets.GH_TOKEN }}
           repository: qhkm/gowhisper-releases
-          tag_name: v.1.0.18
+          tag_name: v.1.0.19
           draft: true
           files: |
             release/build/*.dmg
@@ -83,7 +83,7 @@ jobs:
         with:
           repository: ${{ secrets.OWNER }}/${{ secrets.REPO }}
           token: ${{ secrets.GH_TOKEN }}
-          ref: "8d2cc79fd09b56e667cf6b3aa57c26a2d6c27834"
+          ref: "e9b50ca42efd0db5e665a9eb382549fa8d8b8429"
           # path: "./gowhisper"
       - name: Setup node
         uses: actions/setup-node@v3
@@ -127,7 +127,7 @@ jobs:
 
           Get-ChildItem $env:GITHUB_WORKSPACE
 
-          $input_file_path = Join-Path -Path $current_dir -ChildPath "release\build\GoWhisper-1.0.18-win-x64.exe"
+          $input_file_path = Join-Path -Path $current_dir -ChildPath "release\build\GoWhisper-1.0.19-win-x64.exe"
 
           echo "Input file path: $input_file_path"
 
@@ -136,7 +136,7 @@ jobs:
            Get-ChildItem $env:GITHUB_WORKSPACE\release\build
 
       - name: manually update checksum
-        run: npm run updateHash .\GoWhisper-1.0.18-win-x64.exe
+        run: npm run updateHash .\GoWhisper-1.0.19-win-x64.exe
 
       - name: list workspace contents
         run: |
@@ -151,9 +151,9 @@ jobs:
         with:
           token: ${{ secrets.GH_TOKEN }}
           repository: qhkm/gowhisper-releases
-          tag_name: v.1.0.18
+          tag_name: v.1.0.19
           draft: true
-          body: "Release v.1.0.18"
+          body: "Release v.1.0.19"
           files: |
-            GoWhisper-1.0.18-win-x64.exe
+            GoWhisper-1.0.19-win-x64.exe
             latest.yml
