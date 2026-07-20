@@ -108,43 +108,20 @@ jobs:
         run: |
           Get-ChildItem $env:GITHUB_WORKSPACE\release\build
 
-      - name: Download CodeSignTool and unzip
-        run: |
-          $url = "https://github.com/SSLcom/CodeSignTool/releases/download/v1.3.2/CodeSignTool-v1.3.2-windows.zip"
-          Invoke-WebRequest -OutFile CodeSignTool.zip $url
-          Expand-Archive -Path CodeSignTool.zip -DestinationPath "$env:GITHUB_WORKSPACE\CodeSignTool" -Force
-          Get-ChildItem -Recurse "$env:GITHUB_WORKSPACE\CodeSignTool" -Filter CodeSignTool.bat | ForEach-Object { $_.FullName }
+      # Signing intentionally skipped — SSL.com cert expired. Shipping unsigned
+      # for now (Windows shows a SmartScreen "More info -> Run anyway" prompt).
+      # To re-enable signing later, restore the CodeSignTool download + sign +
+      # updateHash steps and publish from the workspace root instead.
 
-      - name: Use CodeSignTool to sign release build
-        run: |
-          $bat = Get-ChildItem -Recurse "$env:GITHUB_WORKSPACE\CodeSignTool" -Filter CodeSignTool.bat | Select-Object -First 1
-          $batDir = Split-Path $bat.FullName
-          $input_file_path = "$env:GITHUB_WORKSPACE\release\build\GoWhisper-1.1.0-win-x64.exe"
-          echo "CodeSignTool: $($bat.FullName)"
-          echo "Input file path: $input_file_path"
-          Set-Location $batDir
-          .\CodeSignTool.bat sign -credential_id=${{secrets.CREDENTIAL_ID}} -username=${{secrets.ES_USERNAME}} -password="${{secrets.ES_PASSWORD}}" -input_file_path="$input_file_path" -output_dir_path="$env:GITHUB_WORKSPACE" -totp_secret=${{secrets.ES_TOTP_SECRET}}
-          Get-ChildItem $env:GITHUB_WORKSPACE\GoWhisper-1.1.0-win-x64.exe
-
-      - name: manually update checksum
-        run: npm run updateHash .\GoWhisper-1.1.0-win-x64.exe
-
-      - name: list workspace contents
-        run: |
-          Get-Content latest.yml
-
-      - name: list workspace contents
-        run: |
-          Get-ChildItem $env:GITHUB_WORKSPACE
-
-      - name: Release with notes
+      - name: Release (unsigned) to gowhisper-releases
         uses: softprops/action-gh-release@v2
         with:
           token: ${{ secrets.GH_TOKEN }}
           repository: qhkm/gowhisper-releases
           tag_name: v.1.1.0
           draft: true
-          body: "Release v.1.1.0"
+          body: "Release v.1.1.0 (Windows, unsigned — on first launch click More info -> Run anyway)"
           files: |
-            GoWhisper-1.1.0-win-x64.exe
-            latest.yml
+            release/build/GoWhisper-1.1.0-win-x64.exe
+            release/build/GoWhisper-1.1.0-win-x64.exe.blockmap
+            release/build/latest.yml
