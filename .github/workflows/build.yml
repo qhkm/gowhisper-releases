@@ -21,6 +21,7 @@ jobs:
   #       run: npm run package:linux -- --publish always
 
   build_on_mac:
+    if: false  # disabled for the 1.1.0 Windows validation run; re-enable + bump ref/tag for a full release
     runs-on: macos-latest
     steps:
       - name: Checkout gh repo
@@ -83,7 +84,7 @@ jobs:
         with:
           repository: ${{ secrets.OWNER }}/${{ secrets.REPO }}
           token: ${{ secrets.GH_TOKEN }}
-          ref: "e9b50ca42efd0db5e665a9eb382549fa8d8b8429"
+          ref: "75bf807e10ba605016910571cf5e0da2f4b8a101"
           # path: "./gowhisper"
       - name: Setup node
         uses: actions/setup-node@v3
@@ -127,7 +128,7 @@ jobs:
 
           Get-ChildItem $env:GITHUB_WORKSPACE
 
-          $input_file_path = Join-Path -Path $current_dir -ChildPath "release\build\GoWhisper-1.0.19-win-x64.exe"
+          $input_file_path = Join-Path -Path $current_dir -ChildPath "release\build\GoWhisper-1.1.0-win-x64.exe"
 
           echo "Input file path: $input_file_path"
 
@@ -136,7 +137,7 @@ jobs:
            Get-ChildItem $env:GITHUB_WORKSPACE\release\build
 
       - name: manually update checksum
-        run: npm run updateHash .\GoWhisper-1.0.19-win-x64.exe
+        run: npm run updateHash .\GoWhisper-1.1.0-win-x64.exe
 
       - name: list workspace contents
         run: |
@@ -151,9 +152,9 @@ jobs:
         with:
           token: ${{ secrets.GH_TOKEN }}
           repository: qhkm/gowhisper-releases
-          tag_name: v.1.0.19
+          tag_name: v.1.1.0
           draft: true
-          body: "Release v.1.0.19"
+          body: "Release v.1.1.0"
           files: |
-            GoWhisper-1.0.19-win-x64.exe
+            GoWhisper-1.1.0-win-x64.exe
             latest.yml
