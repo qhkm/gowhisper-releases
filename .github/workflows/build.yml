@@ -110,33 +110,21 @@ jobs:
 
       - name: Download CodeSignTool and unzip
         run: |
-          Invoke-WebRequest -OutFile eSigner_CKA.zip "https://www.ssl.com/download/codesigntool-for-windows"
-          $zipFilePath = "eSigner_CKA.zip"
-          $destinationFolder = Get-Location
-
-          New-Item -ItemType Directory -Force -Path $destinationFolder
-
-          Expand-Archive -Path $zipFilePath -DestinationPath $destinationFolder
+          $url = "https://github.com/SSLcom/CodeSignTool/releases/download/v1.3.2/CodeSignTool-v1.3.2-windows.zip"
+          Invoke-WebRequest -OutFile CodeSignTool.zip $url
+          Expand-Archive -Path CodeSignTool.zip -DestinationPath "$env:GITHUB_WORKSPACE\CodeSignTool" -Force
+          Get-ChildItem -Recurse "$env:GITHUB_WORKSPACE\CodeSignTool" -Filter CodeSignTool.bat | ForEach-Object { $_.FullName }
 
       - name: Use CodeSignTool to sign release build
         run: |
-          echo "Current directory: $PWD"
-
-          $current_dir = $PWD
-
-          echo "Current directory: $current_dir"
-
-          Get-ChildItem $current_dir
-
-          Get-ChildItem $env:GITHUB_WORKSPACE
-
-          $input_file_path = Join-Path -Path $current_dir -ChildPath "release\build\GoWhisper-1.1.0-win-x64.exe"
-
+          $bat = Get-ChildItem -Recurse "$env:GITHUB_WORKSPACE\CodeSignTool" -Filter CodeSignTool.bat | Select-Object -First 1
+          $batDir = Split-Path $bat.FullName
+          $input_file_path = "$env:GITHUB_WORKSPACE\release\build\GoWhisper-1.1.0-win-x64.exe"
+          echo "CodeSignTool: $($bat.FullName)"
           echo "Input file path: $input_file_path"
-
-          .\CodeSignTool.bat sign -credential_id=${{secrets.CREDENTIAL_ID}} -username=${{secrets.ES_USERNAME}} -password="${{secrets.ES_PASSWORD}}" -input_file_path="$input_file_path" -output_dir_path="." -totp_secret=${{secrets.ES_TOTP_SECRET}}
-
-           Get-ChildItem $env:GITHUB_WORKSPACE\release\build
+          Set-Location $batDir
+          .\CodeSignTool.bat sign -credential_id=${{secrets.CREDENTIAL_ID}} -username=${{secrets.ES_USERNAME}} -password="${{secrets.ES_PASSWORD}}" -input_file_path="$input_file_path" -output_dir_path="$env:GITHUB_WORKSPACE" -totp_secret=${{secrets.ES_TOTP_SECRET}}
+          Get-ChildItem $env:GITHUB_WORKSPACE\GoWhisper-1.1.0-win-x64.exe
 
       - name: manually update checksum
         run: npm run updateHash .\GoWhisper-1.1.0-win-x64.exe
